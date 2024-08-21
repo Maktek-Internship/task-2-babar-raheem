@@ -5,10 +5,10 @@ from pandasai import SmartDataframe
 from dotenv import load_dotenv
 import streamlit as st
 import matplotlib
-from langchain_groq import ChatGroq
+from langchain_groq.chat_models import ChatGroq
 
 # To select backend for matplotlib
-matplotlib.use("TkAgg")
+# matplotlib.use("TkAgg")
 
 # Load environment variables
 load_dotenv()
@@ -23,7 +23,7 @@ llm = ChatGroq(
     )
 
 # Set up the Streamlit app title
-st.image("C:\\Users\\Babar Raheem\\Desktop\\logo.png", use_column_width=True)
+st.image("logo.png", use_column_width=True)
 st.title("Prompt-Driven Analysis with PandasAI")
 
 # File uploader for CSV files
@@ -44,15 +44,21 @@ if uploaded_file:
     if st.button("Generate"):
         if Prompt:
             with st.spinner("Generating response..."):
-                response = df.chat(Prompt)
+              try:
+                  response = df.chat(Prompt)
                 # Display response with the logo
-                col1, col2 = st.columns([1, 5])
+                  col1, col2 = st.columns([1, 5])
+            
+                  
                 
-                with col1:
-                    st.image("C:\\Users\\Babar Raheem\\Desktop\\download.jpg", width=50)
+                  with col1:
+                    st.image("download.jpg", width=50)
 
-                with col2:
+                  with col2:
                     st.write(response)
-                
+                    
+              except Exception as e:
+                  print("Error:{e}")
+                  
         else:
             st.warning("Please enter a prompt")
